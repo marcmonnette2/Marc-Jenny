@@ -10,14 +10,16 @@
 
   <style>
     html, body {
-      margin: 0; padding: 0; height: 100%;
-      overflow: hidden;
+      margin: 0; padding: 0;
+      min-height: 100%;
+      overflow-x: hidden;
       font-family: 'Courier New', serif;
-      background: #000;
-      color: white;
+      background: #fdf6e3; /* cream background for entire page */
+      color: #222; /* dark text for readability */
       user-select: none;
     }
 
+    /* Slideshow fixed full viewport */
     #slideshow {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -48,14 +50,13 @@
       z-index: 1;
     }
 
-    /* Top bar full width */
+    /* Top bar fixed with heading, buttons, and date */
     #top-bar {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
-      max-width: 100%;
-      height: 100px; /* enough height for heading */
+      height: 100px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -63,25 +64,31 @@
       z-index: 10;
       user-select: none;
       box-sizing: border-box;
+      background: transparent;
+      color: white;
     }
 
     /* Heading container centered absolutely */
     #heading-container {
-  position: absolute;
-  top: 70px; /* move it down from the top */
-  left: 50%;
-  transform: translateX(-50%);
-  user-select: none;
-  white-space: nowrap;
-  pointer-events: none;
-}
+      position: absolute;
+      top: 70px;
+      left: 50%;
+      transform: translateX(-50%);
+      user-select: none;
+      white-space: nowrap;
+      pointer-events: none;
+      color: white;
+      text-shadow:
+        0 0 8px rgba(255 255 255 / 0.6),
+        0 2px 10px rgba(255 255 255 / 0.3);
+    }
 
     /* Buttons containers */
     #buttons-left, #buttons-right {
       display: flex;
       gap: 1em;
       flex-shrink: 0;
-      pointer-events: auto; /* enable clicking */
+      pointer-events: auto;
     }
 
     button {
@@ -105,17 +112,31 @@
       justify-content: center;
     }
 
-button:hover {
-  background: white;
-  color: #222;
-  outline: none;
-  box-shadow: none;
-}
+    button:hover {
+      background: white;
+      color: #222;
+      outline: none;
+      box-shadow: none;
+    }
 
-button:focus {
-  outline: none;
-  box-shadow: none;
-}
+    button:focus {
+      outline: none;
+      box-shadow: none;
+    }
+
+    /* Date inside top-bar */
+    #date {
+      font-family: 'Aspire', serif;
+      font-weight: 300;
+      font-size: 1.6vw;
+      letter-spacing: 0.15em;
+      opacity: 0.85;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+      color: white;
+      white-space: nowrap;
+      user-select: none;
+      flex-shrink: 0;
+    }
 
     /* Logo style */
     #content h1 {
@@ -124,57 +145,101 @@ button:focus {
       font-size: 8vw;
       margin: 0;
       letter-spacing: 0.05em;
-      text-shadow:
-        0 0 8px rgba(255 255 255 / 0.6),
-        0 2px 10px rgba(255 255 255 / 0.3);
       line-height: 1.1;
-      color: white;
       user-select: none;
     }
 
-    /* Bottom info container */
-    #bottom-info {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      text-align: center;
-      z-index: 10;
-      max-width: 90vw;
-      padding: 0 20px;
+    /* About Us Section */
+    #about-us {
+      background: #fdf6e3; /* cream */
+      color: #222;
+      padding: 3em 5vw;
+      max-width: 900px;
+      margin: 100vh auto 5em; /* push below slideshow */
+      font-family: 'Aspire', serif;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      box-sizing: border-box;
+      position: relative;
+      border-radius: 6px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
+
+    #about-us h2 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      color: #444;
+      user-select: text;
+    }
+
+    #about-us .image-wrapper {
+      float: left;
+      width: 200px;
+      height: 200px;
+      margin-right: 1.5em;
+      margin-bottom: 1em;
+      position: relative;
       user-select: none;
     }
 
-    #bottom-info h2 {
-      font-weight: 300;
-      font-size: 3vw;
-      margin: 0 0 0.3em 0;
-      letter-spacing: 0.15em;
-      opacity: 0.85;
-      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    #about-us .image-offset {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      width: 100%;
+      height: 100%;
+      background-color: #f28b82; /* light red */
+      z-index: 0;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    #bottom-info p.location {
-      font-weight: 300;
-      font-size: 1.8vw;
-      margin: 0;
-      opacity: 0.7;
-      text-shadow: 0 0 8px rgba(0,0,0,0.6);
+    #about-us img {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      border-radius: 4px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+      display: block;
     }
 
+    /* Clear float */
+    #about-us::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    /* Responsive */
     @media (max-width: 768px) {
-      #top-bar {
+      #about-us {
+        padding: 2em 4vw;
+        margin: 100vh auto 3em;
+      }
+      #about-us h2 {
+        font-size: 2.5rem;
+      }
+      #about-us .image-wrapper {
+        float: none;
+        width: 100%;
         height: auto;
-        padding: 10px 15px;
+        margin: 0 0 1.5em 0;
+        position: relative;
       }
-
-      #content h1 {
-        font-size: 14vw;
+      #about-us .image-offset {
+        top: 10px;
+        left: 10px;
+        width: 100%;
+        height: 100%;
       }
-      #bottom-info h2 {
-        font-size: 6vw;
+      #about-us img {
+        height: auto;
+        border-radius: 6px;
       }
-      #bottom-info p.location {
+      #date {
         font-size: 4vw;
       }
       button {
@@ -183,42 +248,7 @@ button:focus {
         height: auto;
         padding: 0.6em 1.2em;
       }
-      #buttons-left, #buttons-right {
-        gap: 0.8em;
-      }
     }
-
-#bottom-info p.location a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  border: 2px solid white;
-  color: white;
-  font-family: 'Aspire', serif;
-  font-weight: 400;
-  font-size: 0.9vw;
-  padding: 0.6em 1.4em;
-  border-radius: 0;
-  cursor: pointer;
-  box-sizing: border-box;
-  box-shadow: none;
-  user-select: none;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  min-width: 160px;
-  height: 40px;
-}
-
-#bottom-info p.location a:hover,
-#bottom-info p.location a:focus {
-  background: white;
-  color: #222;
-  outline: none;
-  box-shadow: none;
-}
-
   </style>
 </head>
 <body>
@@ -231,66 +261,73 @@ button:focus {
       <button onclick="window.open('https://your-registry-link.com', '_blank')">Registry</button>
     </div>
 
-<div id="heading-container">
-  <div id="content">
-    <h1>Marc + Jenny</h1>
-  </div>
-</div>
+    <div id="heading-container">
+      <div id="content">
+        <h1>Marc + Jenny</h1>
+      </div>
+    </div>
+
+    <div id="date">04/25/2026</div>
 
     <div id="buttons-right">
-      <button>Button</button>
+      <button onclick="window.open('https://www.google.com/maps/search/?api=1&query=Ivy+House+3291+Blue+Star+Hwy+Saugatuck+MI', '_blank')">Venue</button>
     </div>
   </div>
 
-<div id="bottom-info">
-  <h2>04/25/2026</h2>
-  <p class="location">
-    <a href="https://g.co/kgs/qMX1kxU" target="_blank" rel="noopener noreferrer">
-      Ivy House - 3291 Blue Star Hwy, Saugatuck, MI 49453
-    </a>
-  </p>
-</div>
+  <div id="about-us" tabindex="-1" aria-label="About Us Section">
+    <h2>About Us</h2>
+    <div class="image-wrapper" aria-hidden="true">
+      <div class="image-offset"></div>
+      <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=400&q=80" alt="Marc and Jenny" />
+    </div>
+    <p>
+      We met on a beautiful summer day and instantly connected over our shared love of adventure and laughter. Through the years, our journey together has been filled with unforgettable moments, endless support, and a bond that continues to grow stronger every day.
+    </p>
+    <p>
+      Our wedding day is a celebration of that love and commitment, surrounded by family and friends who have been part of our story. We can’t wait to share this special moment with you!
+    </p>
+  </div>
 
   <script>
-  function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
     }
-    return array;
-  }
 
-  const imageUrls = [
-    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80',
-    'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1920&q=80',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1920&q=80',
-    'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1920&q=80',
-    'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1920&q=80'
-  ];
+    const imageUrls = [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1920&q=80'
+    ];
 
-  shuffle(imageUrls);
+    shuffle(imageUrls);
 
-  const slideshow = document.getElementById('slideshow');
-  let currentIndex = 0;
-  const slides = [];
+    const slideshow = document.getElementById('slideshow');
+    let currentIndex = 0;
+    const slides = [];
 
-  imageUrls.forEach((url, i) => {
-    const slide = document.createElement('div');
-    slide.classList.add('slide');
-    slide.style.backgroundImage = `url('${url}')`;
-    if (i === 0) slide.classList.add('visible');
-    slideshow.appendChild(slide);
-    slides.push(slide);
-  });
+    imageUrls.forEach((url, i) => {
+      const slide = document.createElement('div');
+      slide.classList.add('slide');
+      slide.style.backgroundImage = `url('${url}')`;
+      if (i === 0) slide.classList.add('visible');
+      slideshow.appendChild(slide);
+      slides.push(slide);
+    });
 
-  function nextSlide() {
-    slides[currentIndex].classList.remove('visible');
-    currentIndex = (currentIndex + 1) % slides.length;
-    slides[currentIndex].classList.add('visible');
-  }
+    function nextSlide() {
+      slides[currentIndex].classList.remove('visible');
+      currentIndex = (currentIndex + 1) % slides.length;
+      slides[currentIndex].classList.add('visible');
+    }
 
-  setInterval(nextSlide, 2000); // 2 seconds per slide, 1s fade transition
-</script>
+    setInterval(nextSlide, 4000); // 4 seconds per slide, 1s fade transition
+  </script>
 
 </body>
 </html>
