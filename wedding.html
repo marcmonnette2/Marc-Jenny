@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fullscreen Slideshow with Aspire Font</title>
+
+  <!-- Fonts: Aspire for body, Great Vibes for logo -->
+  <link href="https://fonts.googleapis.com/css2?family=Aspire&family=Great+Vibes&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      overflow: hidden;
+      font-family: 'Aspire', serif;
+      background: #000;
+      color: white;
+      user-select: none;
+    }
+
+    #slideshow {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .slide {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-position: center;
+      background-size: cover;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+
+    .slide.visible {
+      opacity: 1;
+      z-index: 1;
+    }
+
+    #overlay {
+      position: fixed;
+      top: 0; left: 0; width: 100vw; height: 100vh;
+      background: rgba(0,0,0,0.35);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Top bar full width */
+    #top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      max-width: 100%;
+      height: 100px; /* enough height for heading */
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 10;
+      user-select: none;
+      box-sizing: border-box;
+    }
+
+    /* Heading container centered absolutely */
+    #heading-container {
+  position: absolute;
+  top: 70px; /* move it down from the top */
+  left: 50%;
+  transform: translateX(-50%);
+  user-select: none;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+    /* Buttons containers */
+    #buttons-left, #buttons-right {
+      display: flex;
+      gap: 1em;
+      flex-shrink: 0;
+      pointer-events: auto; /* enable clicking */
+    }
+
+    button {
+      background: transparent;
+      border: 2px solid white;
+      color: white;
+      font-family: 'Aspire', serif;
+      font-weight: 400;
+      font-size: 0.9vw;
+      padding: 0.6em 1.4em;
+      border-radius: 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      width: 160px;
+      height: 40px;
+      box-sizing: border-box;
+      box-shadow: none;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+button:hover {
+  background: white;
+  color: #222;
+  outline: none;
+  box-shadow: none;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+    /* Logo style */
+    #content h1 {
+      font-family: 'Great Vibes', cursive;
+      font-weight: 400;
+      font-size: 8vw;
+      margin: 0;
+      letter-spacing: 0.05em;
+      text-shadow:
+        0 0 8px rgba(255 255 255 / 0.6),
+        0 2px 10px rgba(255 255 255 / 0.3);
+      line-height: 1.1;
+      color: white;
+      user-select: none;
+    }
+
+    /* Heart styling */
+    #content h1 .heart {
+      color: #FFFFFF;
+      margin: 0 0.3em;
+      font-size: 1.2em;
+      vertical-align: middle;
+      text-shadow: 0 0 6px #ff4d6d;
+      user-select: none;
+    }
+
+    /* Bottom info container */
+    #bottom-info {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+      max-width: 90vw;
+      padding: 0 20px;
+      user-select: none;
+    }
+
+    #bottom-info h2 {
+      font-weight: 300;
+      font-size: 3vw;
+      margin: 0 0 0.3em 0;
+      letter-spacing: 0.15em;
+      opacity: 0.85;
+      text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    }
+
+    #bottom-info p.location {
+      font-weight: 300;
+      font-size: 1.8vw;
+      margin: 0;
+      opacity: 0.7;
+      text-shadow: 0 0 8px rgba(0,0,0,0.6);
+    }
+
+    @media (max-width: 768px) {
+      #top-bar {
+        height: auto;
+        padding: 10px 15px;
+      }
+
+      #content h1 {
+        font-size: 14vw;
+      }
+      #bottom-info h2 {
+        font-size: 6vw;
+      }
+      #bottom-info p.location {
+        font-size: 4vw;
+      }
+      button {
+        font-size: 4vw;
+        width: 110px;
+        height: auto;
+        padding: 0.6em 1.2em;
+      }
+      #buttons-left, #buttons-right {
+        gap: 0.8em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="slideshow"></div>
+  <div id="overlay"></div>
+
+  <div id="top-bar">
+    <div id="buttons-left">
+      <button onclick="window.open('https://your-registry-link.com', '_blank')">Registry</button>
+    </div>
+
+    <div id="heading-container">
+      <div id="content">
+        <h1>Marc<span class="heart">♥</span>Jenny</h1>
+      </div>
+    </div>
+
+    <div id="buttons-right">
+      <button>Button</button>
+    </div>
+  </div>
+
+  <div id="bottom-info">
+    <h2>04/26/2026</h2>
+    <p class="location">Ivy House - 3291 Blue Star Hwy, Saugatuck, MI 49453</p>
+  </div>
+
+  <script>
+    const imageUrls = [
+      'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1920&q=80',
+      'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=1920&q=80'
+    ];
+
+    const slideshow = document.getElementById('slideshow');
+    let currentIndex = 0;
+    const slides = [];
+
+    imageUrls.forEach((url, i) => {
+      const slide = document.createElement('div');
+      slide.classList.add('slide');
+      slide.style.backgroundImage = `url('${url}')`;
+      if(i === 0) slide.classList.add('visible');
+      slideshow.appendChild(slide);
+      slides.push(slide);
+    });
+
+    function nextSlide() {
+      slides[currentIndex].classList.remove('visible');
+      currentIndex = (currentIndex + 1) % slides.length;
+      slides[currentIndex].classList.add('visible');
+    }
+
+    setInterval(nextSlide, 4000); // 4 seconds per slide, 1s fade transition
+  </script>
+
+</body>
+</html>
